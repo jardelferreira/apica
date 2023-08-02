@@ -1,0 +1,10 @@
+__pycache__
+.vscode
+.venv
+env
+fastenv
+tgg_export_caepi.txt
+Todo.md
+imgs
+README.md
+.xlsx
