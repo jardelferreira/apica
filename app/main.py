@@ -19,6 +19,9 @@ app = FastAPI(
     )
 
 origins = [
+    "localhost:5000",
+    "localhost",
+    "127.0.0.1",
     "https://www.jfwebsystem.com.br",
     "http://www.jfwebsystem.com.br",
 ]
@@ -37,4 +40,4 @@ async def index():
     return "HOME"
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
