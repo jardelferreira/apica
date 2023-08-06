@@ -19,7 +19,7 @@ app = FastAPI(
     )
 
 origins = [
-    "localhost:5000",
+    "localhost:8000",
     "localhost",
     "127.0.0.1",
     "https://www.jfwebsystem.com.br",
