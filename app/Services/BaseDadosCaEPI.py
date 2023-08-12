@@ -22,7 +22,14 @@ class BaseDadosCaEPI:
         ftp.login()
         ftp.cwd(caminho)
 
-        arquivoZip = 'tgg_export_caepi.zip'
+        # files = ftp.nlst()
+
+        # for file in files:
+        #     print("Filename = " + file)
+        #     ftp.retrbinary("RETR " + file,open("./"+file,'wb').write)
+
+        # ftp.close()
+        arquivoZip = 'tgg_export_caepi.zip.tmp'
         r = io.BytesIO()
 
         ftp.retrbinary(f'RETR {arquivoZip}', r.write)
