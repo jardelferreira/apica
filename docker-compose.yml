@@ -1,0 +1,39 @@
+version: '3'
+services:
+  apica:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jardel1987/apica:1.0
+    container_name: apica-epi
+    privileged: true
+    networks:
+      - selenium-apica
+    ports:
+      - "8000:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - selenium-chrome
+
+  selenium-chrome:
+    build:
+      context: .
+      dockerfile: Dockerfile-chrome 
+    image: selenium/standalone-chrome
+    container_name: selenium-chrome-container
+    environment:
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_MAX_SESSIONS=4
+    networks:
+      - selenium-apica
+    ports:
+      - "4444:4444"
+    volumes:
+      - /home/jardel/selenium/apica/app/downloads:/downloads
+
+networks:
+  selenium-apica:
+
+volumes:
+  chome-downloads:

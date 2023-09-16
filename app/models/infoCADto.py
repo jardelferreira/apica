@@ -13,6 +13,7 @@ class InfoCADto(BaseModel):
     MarcaCA: str | None
     Referencia: str | None
     Cor: str | None
+    Tamanho: str | None
     AprovadoParaLaudo: str | None
     RestricaoLaudo: str | None
     ObservacaoAnaliseLaudo: str | None

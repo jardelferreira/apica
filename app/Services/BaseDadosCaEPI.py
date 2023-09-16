@@ -29,7 +29,7 @@ class BaseDadosCaEPI:
         #     ftp.retrbinary("RETR " + file,open("./"+file,'wb').write)
 
         # ftp.close()
-        arquivoZip = 'tgg_export_caepi.zip.tmp'
+        arquivoZip = 'tgg_export_caepi.zip'
         r = io.BytesIO()
 
         ftp.retrbinary(f'RETR {arquivoZip}', r.write)
@@ -39,7 +39,7 @@ class BaseDadosCaEPI:
         arquivoZip.extractall()
     
     def _transformarEmDataFrame(self):                  
-        self.baseDadosDF = pd.read_csv(self.nomeArquivo, sep=r"(?<!:\s)\|(?!\s)",engine='python', encoding='unicode_escape', quoting=3, quotechar='"', dtype="string", on_bad_lines='skip')
+        self.baseDadosDF = pd.read_csv(self.nomeArquivo, sep=r"(?<!:\s)\|(?!\s)",engine='python', encoding='unicode_escape', quoting=3, quotechar='"', dtype="string",on_bad_lines='skip')
         if('RegistroCA' not in self.baseDadosDF.columns):
             self.baseDadosDF = self.baseDadosDF.rename(columns = {'#NRRegistroCA':'RegistroCA'})
 

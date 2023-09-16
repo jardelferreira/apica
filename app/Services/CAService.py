@@ -62,7 +62,7 @@ class CAService:
         print("Base de Dados atualizada em", datetime.now())
 
     def _defineHorarioAtualizacao(self):
-        horaAtualizacao = 20
+        horaAtualizacao = 21
         minutoAtualizacao = 10
         scheduler = BackgroundScheduler()
         scheduler.start()

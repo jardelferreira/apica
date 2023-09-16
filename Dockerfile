@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM joaoaugustomv/api_base_ca_epi:2.0
 WORKDIR /app
 COPY requirements.txt /app
 RUN pip install -r requirements.txt

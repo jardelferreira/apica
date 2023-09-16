@@ -1,0 +1,11 @@
+FROM selenium/standalone-chrome
+
+USER root
+
+# Crie o diretório de downloads no contêiner
+RUN mkdir -p /downloads
+
+# Configurações para permitir downloads no Chrome
+RUN echo "download.default_directory=/downloads" >> /opt/google/chrome/default
+
+USER seluser

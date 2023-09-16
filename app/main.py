@@ -1,6 +1,7 @@
 from fastapi import Depends, FastAPI
 import uvicorn
 from routers import certificadoApovacao
+from fastapi.responses import FileResponse
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -34,7 +35,7 @@ app.include_router(certificadoApovacao.router)
 
 @app.get("/", tags=["HOME"])
 async def index():
-    return "HOME"
+    return "Atualizado"
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
