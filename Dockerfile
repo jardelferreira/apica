@@ -1,4 +1,4 @@
-FROM joaoaugustomv/api_base_ca_epi:2.0
+FROM jardel1987/apica:1.1
 WORKDIR /app
 COPY requirements.txt /app
 RUN pip install -r requirements.txt
