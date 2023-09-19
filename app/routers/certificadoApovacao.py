@@ -30,8 +30,11 @@ async def getCertificate(ca: str):
 
 
 @router.get("/busca/{ca}", tags=["crawling"])
-def crawlerSeleniumCA(ca: str):
-    dataAPI = CrawlerCA.getCA(ca)
+def crawlerSeleniumCA(ca: str,param: str = None):
+    if param:
+        dataAPI = CrawlerCA.getCA(ca,param)
+    else:
+        dataAPI = CrawlerCA.getCA(ca)
     if (dataAPI != []):
         return JSONResponse(dataAPI)
     return JSONResponse(status_code=404,content={

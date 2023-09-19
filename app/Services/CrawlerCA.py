@@ -14,13 +14,21 @@ from selenium.webdriver.remote.file_detector import LocalFileDetector
 
 class CrawlerCA:
 
-    def getCA(ca: str):
+    def getCA(ca: str, force: str = None):
         print(f"iniciando busca pelo CA-{ca}")
         with open('/app/Services/data.json', 'r') as json_file:
             dados_existentes = json.load(json_file)
-        if ca in dados_existentes:
-            if(dados_existentes[ca]['data_validade'] > datetime.today().strftime('%d/%m/%Y')):
+            cas = dados_existentes.keys() 
+            print("CAs = ",cas)
+            ca = str(ca)
+        if ca in cas:
+            print("CA: ",ca)
+            validdate = datetime.strptime(dados_existentes[ca]['data_validade'], "%d/%m/%Y %H:%M:%S")
+            if((validdate.strftime("%Y/%m/%d") > datetime.today().strftime('%Y/%m/%d'))):
                 print("CA encontrado previamente")
+                return dados_existentes[ca]
+            elif((validdate.strftime("%Y/%m/%d") < datetime.today().strftime('%Y/%m/%d')) and force == None):
+                dados_existentes[ca]['update'] = True
                 return dados_existentes[ca]
             
         options = Options()
@@ -44,15 +52,15 @@ class CrawlerCA:
         
         driver.get("http://caepi.mte.gov.br/internet/ConsultaCAInternet.aspx")
         print("navegando ate o site")
-        input_ca = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='txtNumeroCA']")))
+        input_ca = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='txtNumeroCA']")))
         input_ca.send_keys(ca)
-        btn_consultar = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='btnConsultar']")))
+        btn_consultar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='btnConsultar']")))
         btn_consultar.click()
         print("consultando")
         sleep(5)
         
         try:
-            wait = WebDriverWait(driver, 20)
+            wait = WebDriverWait(driver, 10)
             btn_image = wait.until(EC.element_to_be_clickable((By.XPATH,"//*[@id='PlaceHolderConteudo_grdListaResultado_btnDetalhar_0']")))
             btn_image.click()
         except Exception as error:
@@ -89,13 +97,13 @@ class CrawlerCA:
         print("recuperando informações do CA")
         for item in items:
             try:
-                temp_array[item] = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"#PlaceHolderConteudo_"+items[item]))).text
+                temp_array[item] = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"#PlaceHolderConteudo_"+items[item]))).text
             except:
                 pass
         
         nca = driver.find_element(By.ID,"PlaceHolderConteudo_lblNRRegistroCA")
         print(nca.text)
-        capdf = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"#PlaceHolderConteudo_btnVisualizarCA")))
+        capdf = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"#PlaceHolderConteudo_btnVisualizarCA")))
         capdf.click()
         sleep(5)
         localdir = os.getcwd()
