@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile
     image: jardel1987/apica:1.0
     container_name: apica-epi
+    restart: unless-stopped
     privileged: true
     networks:
       - selenium-apica
@@ -13,6 +14,7 @@ services:
       - "8000:8000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - apica-bkp:./app
     depends_on:
       - selenium-chrome
 
@@ -22,6 +24,7 @@ services:
       dockerfile: Dockerfile-chrome 
     image: selenium/standalone-chrome
     container_name: selenium-chrome-container
+    restart: unless-stopped
     environment:
       - SE_NODE_OVERRIDE_MAX_SESSIONS=true
       - SE_NODE_MAX_SESSIONS=4
@@ -36,4 +39,4 @@ networks:
   selenium-apica:
 
 volumes:
-  chome-downloads:
+  apica-bkp:
