@@ -20,6 +20,7 @@ app = FastAPI(
     )
 
 origins = [
+    "http://localhost",
     "https://www.jfwebsystem.com.br",
     "http://www.jfwebsystem.com.br",
 ]

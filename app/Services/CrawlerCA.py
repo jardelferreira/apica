@@ -14,13 +14,13 @@ from selenium.webdriver.remote.file_detector import LocalFileDetector
 
 class CrawlerCA:
 
-    def getCA(ca: int):
+    def getCA(ca: str):
         print(f"iniciando busca pelo CA-{ca}")
-        with open('data.json', 'r') as json_file:
+        with open('/app/Services/data.json', 'r') as json_file:
             dados_existentes = json.load(json_file)
         if ca in dados_existentes:
-            if(dados_existentes['data_validade'] > datetime.today().strftime('%d/%m/%Y')):
-                print("CA encontrado previamente", dados_existentes[ca])
+            if(dados_existentes[ca]['data_validade'] > datetime.today().strftime('%d/%m/%Y')):
+                print("CA encontrado previamente")
                 return dados_existentes[ca]
             
         options = Options()
@@ -101,13 +101,13 @@ class CrawlerCA:
         localdir = os.getcwd()
         print("Copiando dados entre containers")
         subprocess.Popen(f"docker cp selenium-chrome-container:/home/seluser/files/ImprimirCAPesquisaInternet.pdf {localdir}/downloads/CA-{ca}.pdf",shell=True)
-        with open('data.json', 'r') as json_file:
+        with open('/app/Services/data.json', 'r') as json_file:
             dados_existentes = json.load(json_file)
         
         dados_existentes[ca] = temp_array
 
         # Salvar os dados atualizados
-        with open('data.json', 'w') as json_file:
+        with open('/app/Services/data.json', 'w') as json_file:
             json.dump(dados_existentes, json_file, indent=4)
             
          # Crie uma instância do cliente Docker
