@@ -24,21 +24,27 @@ async def getCertificate(ca: str):
     if (os.path.isfile(f"downloads/CA-{ca}.pdf")):
         return FileResponse(file_location, media_type='application/octet-stream', filename=file_name)
     return JSONResponse(status_code=404,content={
-                            "sucess": False,
+                            "success": False,
                             "erros": ["Arquivo não localizado"]}
                         )
 
 
-@router.get("/busca/{ca}", tags=["crawling"])
+@router.get("/consulta/{ca}", tags=["crawling"])
 def crawlerSeleniumCA(ca: str,param: str = None):
     if param:
         dataAPI = CrawlerCA.getCA(ca,param)
     else:
         dataAPI = CrawlerCA.getCA(ca)
     if (dataAPI != []):
-        return JSONResponse(dataAPI)
+        return JSONResponse(status_code=200,content={
+            "success":True,
+            "data":dataAPI})
+    elif(dataAPI == []):
+        dataAPI = caService.retornarTodasInfoAtuais(ca)
+        if dataAPI != None:
+            return dataAPI
     return JSONResponse(status_code=404,content={
-                            "sucess": False,
+                            "success": False,
                             "erros": ["Numero Ca não encontrado!"]}
                         )
 
@@ -53,7 +59,7 @@ async def retornarInfoCA(ca: str) -> InfoCADto:
     if dadosEPI != None:
         return dadosEPI
     return JSONResponse(status_code=404,content={
-                            "sucess": False,
+                            "success": False,
                             "erros": ["Numero Ca não encontrado!"]}
                         )
     
@@ -68,7 +74,7 @@ async def retornarTodasAtualizacoes(ca: str) -> list[InfoCADto]:
         return dadosEPI
 
     return JSONResponse(404, content={
-        "sucess": False,
+        "success": False,
         "erros": ["Numero Ca não encontrado!"]})
 
 
@@ -84,12 +90,12 @@ def post(
         request.listaCAs, request.nomeArquivo)
     if len(request.listaCAs) == 0:
         return JSONResponse(status_code=400, content={
-            "sucess": False,
+            "success": False,
             "erros": "listaCAs não pode estar vazia"})
 
     if not respExportarExcel['success']:
         return JSONResponse(status_code=404, content={
-            "sucess": False,
+            "success": False,
             "CAsNaoEncontrados": respExportarExcel['CAsNaoEncontrados']})
 
     planilha = respExportarExcel['planilha']
@@ -105,7 +111,7 @@ def post(
 def exportarJSON(request: RequestParaExportarJson) -> list[InfoCADto]:
     if len(request.listaCAs) == 0:
         return JSONResponse(status_code=400, content={
-            "sucess": False,
+            "success": False,
             "erros": "listaCAs não pode estar vazia"})
 
     respExportarJson = caService.exportarJson(request.listaCAs)
