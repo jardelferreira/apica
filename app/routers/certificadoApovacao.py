@@ -39,10 +39,11 @@ def crawlerSeleniumCA(ca: str,param: str = None):
         return JSONResponse(status_code=200,content={
             "success":True,
             "data":dataAPI})
-    elif(dataAPI == []):
-        dataAPI = caService.retornarTodasInfoAtuais(ca)
-        if dataAPI != None:
-            return dataAPI
+    # elif(dataAPI == []):
+    #     dataAPI = caService.retornarTodasInfoAtuais(ca)
+    #     if dataAPI != None:
+    #         return dataAPI
+        
     return JSONResponse(status_code=404,content={
                             "success": False,
                             "erros": ["Numero Ca não encontrado!"]}
