@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: jardel1987/apica:1.0
+    image: jardel1987/apica:2.0
     container_name: apica-epi
     restart: unless-stopped
     privileged: true
@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-chrome 
-    image: selenium/standalone-chrome
+    image: selenium/standalone-chrome:117.0.5938.92-chromedriver-117.0.5938.92-20230926
     container_name: selenium-chrome-container
     restart: unless-stopped
     environment:

@@ -1,4 +1,4 @@
-FROM selenium/standalone-chrome
+FROM selenium/standalone-chrome:117.0.5938.92-chromedriver-117.0.5938.92-20230926
 
 USER root
 
