@@ -23,6 +23,8 @@ origins = [
     "http://localhost",
     "https://www.jfwebsystem.com.br",
     "http://www.jfwebsystem.com.br",
+    "https://jfwebsystem.com.br",
+    "http://jfwebsystem.com.br",
 ]
 
 app.add_middleware(
