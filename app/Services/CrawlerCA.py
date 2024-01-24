@@ -24,7 +24,7 @@ class CrawlerCA:
         if ca in cas:
             print("CA: ",ca)
             validdate = datetime.strptime(dados_existentes[ca]['data_validade'], "%d/%m/%Y %H:%M:%S")
-            if((validdate.strftime("%Y/%m/%d") > datetime.today().strftime('%Y/%m/%d'))):
+            if((validdate.strftime("%Y/%m/%d") > datetime.today().strftime('%Y/%m/%d')) and force == None):
                 print("CA encontrado previamente")
                 return dados_existentes[ca]
             elif((validdate.strftime("%Y/%m/%d") < datetime.today().strftime('%Y/%m/%d')) and force == None):

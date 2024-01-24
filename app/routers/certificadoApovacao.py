@@ -18,11 +18,16 @@ router = APIRouter(tags=["Certificado de Aprovação"])
 caService = CAService()
 
 @router.get("/certificado/{ca}", tags=["certificados"])
-async def getCertificate(ca: str):
+async def getCertificate(ca: str, param: str = None):
     file_location = f"downloads/CA-{ca}.pdf"
     file_name = f"CA-{ca}.pdf"
     if (os.path.isfile(f"downloads/CA-{ca}.pdf")):
         return FileResponse(file_location, media_type='application/octet-stream', filename=file_name)
+    elif(param == None):
+       return JSONResponse(status_code=303,content={
+                            "success": False,
+                            "erros": ["Atualize a base de dados de arquivos."]}
+                        ) 
     return JSONResponse(status_code=404,content={
                             "success": False,
                             "erros": ["Arquivo não localizado"]}
