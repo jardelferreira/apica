@@ -6,6 +6,8 @@ from fastapi.responses import JSONResponse, StreamingResponse, FileResponse
 
 from Services.CAService import CAService
 from Services.CrawlerCA import CrawlerCA
+from Services.IPGeocoder import IPGeocoder
+from Services.CoodinatesGeocoder import CoodinatesGeocoder
 
 from models.exemplosRequest import ExemplosRequest
 from models.requestParaExportarArquivo import RequestParaExportarArquivo
@@ -32,6 +34,39 @@ async def getCertificate(ca: str, param: str = None):
                             "success": False,
                             "erros": ["Arquivo não localizado"]}
                         )
+
+
+@router.get("/geolocationLatLng", tags=["LatLng"])
+def geolocationLatLng(lat: str, lng: str):
+    if(lat and lng):
+        geolocation = CoodinatesGeocoder.geolocation(lat,lng)
+        if(geolocation["success"]):
+            return JSONResponse(status_code=200,content={
+                "success":True,
+                "data":geolocation})
+        else:
+            return JSONResponse(status_code=200,content={
+            "success":False,
+            "data":geolocation})
+    return JSONResponse(status_code=400,content={
+            "success":False,
+            "data":{"message":"É necessário informar duas coordenadas, lat e lng"}})
+
+@router.get("/geolocationIP/{ip}", tags=["GeoIP"])
+def geolocationIP(ip: str):
+    if(ip):
+        geolocation = IPGeocoder.geolocation(ip)
+        if(geolocation["success"]):
+            return JSONResponse(status_code=200,content={
+                "success":True,
+                "data":geolocation})
+        else:
+            return JSONResponse(status_code=200,content={
+            "success":False,
+            "data":geolocation})
+    return JSONResponse(status_code=400,content={
+            "success":False,
+            "data":{"message":"É necessário informar um IP"}})
 
 
 @router.get("/consulta/{ca}", tags=["crawling"])
