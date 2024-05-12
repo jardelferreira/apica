@@ -69,12 +69,10 @@ def geolocationIP(ip: str):
             "data":{"message":"É necessário informar um IP"}})
 
 
-@router.get("/consulta/{ca}", tags=["crawling"])
-def crawlerSeleniumCA(ca: str,param: str = None):
-    if param:
-        dataAPI = CrawlerCA.getCA(ca,param)
-    else:
-        dataAPI = CrawlerCA.getCA(ca)
+@router.get("/consulta/{ca}/{force}", tags=["crawling"])
+def crawlerSeleniumCA(ca: str,force:bool = False):
+    print(ca,force)
+    dataAPI = CrawlerCA.getCA(ca,force)
     if (dataAPI != []):
         return JSONResponse(status_code=200,content={
             "success":True,

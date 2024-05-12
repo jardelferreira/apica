@@ -14,23 +14,19 @@ from selenium.webdriver.remote.file_detector import LocalFileDetector
 
 class CrawlerCA:
 
-    def getCA(ca: str, force: str = None):
+    def getCA(ca: int, force: bool):
         print(f"iniciando busca pelo CA-{ca}")
+        print(force)
         with open('/app/Services/data.json', 'r') as json_file:
             dados_existentes = json.load(json_file)
             cas = dados_existentes.keys() 
             print("CAs = ",cas)
             ca = str(ca)
-        if ca in cas:
-            print("CA: ",ca)
-            validdate = datetime.strptime(dados_existentes[ca]['data_validade'], "%d/%m/%Y %H:%M:%S")
-            if((validdate.strftime("%Y/%m/%d") > datetime.today().strftime('%Y/%m/%d')) and force == None):
-                print("CA encontrado previamente")
+        if (not force):
+            if (ca in cas):
+                print("CA existente: ",ca)
                 return dados_existentes[ca]
-            elif((validdate.strftime("%Y/%m/%d") < datetime.today().strftime('%Y/%m/%d')) and force == None):
-                dados_existentes[ca]['update'] = True
-                return dados_existentes[ca]
-            
+                
         options = Options()
         options.add_argument('--headless')
         options.add_argument('--charset=UTF-8')
@@ -118,7 +114,7 @@ class CrawlerCA:
         with open('/app/Services/data.json', 'w') as json_file:
             json.dump(dados_existentes, json_file, indent=4)
             
-         # Crie uma instância do cliente Docker
+        # Crie uma instância do cliente Docker
         client = docker.from_env()
         # Nome ou ID do container de origem
         container_name_or_id = "selenium-chrome-container"
@@ -141,4 +137,4 @@ class CrawlerCA:
         driver.quit()
         
         return  temp_array
-    
+        
